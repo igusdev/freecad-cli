@@ -69,7 +69,7 @@ ENV PYTHONPATH "/usr/local/lib:$PYTHONPATH"
 RUN \
   # get FreeCAD Git
   cd \
-  && git clone --branch "$FREECAD_VERSION" "$FREECAD_REPO" \
+  && git clone --branch "$freecad_version" "$FREECAD_REPO" \
   && mkdir freecad-build \
   && cd freecad-build \
   # Build \
