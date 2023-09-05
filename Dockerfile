@@ -11,6 +11,7 @@ RUN \
   pack_build=" \
   build-essential \
   cmake \
+  git \
   gmsh \
   libboost-date-time-dev \
   libboost-dev \
