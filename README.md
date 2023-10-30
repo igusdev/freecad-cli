@@ -1,6 +1,6 @@
 # freecad-cli
 
-This is a fork of [docker-freecad-cli](https://raw.githubusercontent.com/amrit3701/docker-freecad-cli) with some modifications, sometimes company specific.
+This is a fork of [docker-freecad-cli](https://github.com/amrit3701/docker-freecad-cli) with some modifications, sometimes company specific.
 In most cases it's all about keeping the image up to date. Images are published on github registry.
 
 ## Documentation
