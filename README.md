@@ -10,5 +10,5 @@ In most cases it's all about keeping the image up to date. Images are published 
 ## Usage
 
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:0.21.1 FreeCADCmd <command>
+docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:0.21.2 FreeCADCmd <command>
 ```

@@ -6,7 +6,7 @@ on:
 
 env:
   IMAGE_NAME: freecad-cli
-  FREECAD_VERSION: 0.21.1
+  FREECAD_VERSION: 0.21.2
 
 jobs:
   build:

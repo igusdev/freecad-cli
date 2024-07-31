@@ -1,8 +1,8 @@
 FROM ubuntu:23.04
-ARG freecad_version=0.21.1
+ARG freecad_version=0.21.2
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHON_VERSION 3.11.5
+ENV PYTHON_VERSION 3.11.9
 ENV PYTHON_MINOR_VERSION 3.11
 ENV PYTHON_BIN_VERSION python3.11
 ENV FREECAD_REPO https://github.com/FreeCAD/FreeCAD.git
