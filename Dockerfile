@@ -1,5 +1,5 @@
 FROM ubuntu:24.04
-ARG freecad_version=1.0.1
+ARG freecad_version=1.0.2
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PYTHON_VERSION 3.12.7
