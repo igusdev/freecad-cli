@@ -9,7 +9,7 @@ ENV FREECAD_REPO=https://github.com/FreeCAD/FreeCAD.git
 
 RUN \
     pack_build=" \
-    build-essential cmake git \
+    build-essential cmake git ninja-build \
     gmsh libboost-date-time-dev libboost-dev \
     libboost-filesystem-dev libboost-graph-dev libboost-iostreams-dev \
     libboost-program-options-dev libboost-python-dev libboost-regex-dev \
@@ -35,21 +35,25 @@ RUN \
     " \
     && apt update \
     && apt install -y --no-install-recommends software-properties-common \
-    && apt install -y --no-install-recommends $pack_build
+    && apt install -y --no-install-recommends $pack_build \
+    && apt-get clean \
+    && rm /var/lib/apt/lists/* \
+    /usr/share/doc/* \
+    /usr/share/locale/* \
+    /usr/share/man/* \
+    /usr/share/info/* -fR
 
 RUN pipx ensurepath
 
 ENV PYTHONPATH="/usr/local/lib"
 
-# get FreeCAD Git
-RUN cd && git clone --depth 1 --recurse-submodules --shallow-submodules --branch "$freecad_version" "$FREECAD_REPO"
-
 RUN \
     cd \
+    && git clone --depth 1 --recurse-submodules --shallow-submodules --branch "$freecad_version" "$FREECAD_REPO" \
     && mkdir freecad-build \
     && cd freecad-build \
     # Build \
-    && cmake \
+    && cmake -G Ninja \
     # Build with GUI for now otherwise qt components are not found
     # in some modules like TechDraw
     #-DBUILD_GUI=OFF \
@@ -62,8 +66,8 @@ RUN \
     -DENABLE_DEVELOPER_TESTS=OFF \
     ../FreeCAD \
     \
-    && make -j$(nproc --ignore=2) \
-    && make install \
+    && ninja \
+    && ninja install \
     && cd \
     \
     # Clean
@@ -81,11 +85,3 @@ RUN ldconfig
 ENV FREECAD_STARTUP_FILE=/.startup.py
 RUN echo "import FreeCAD" > ${FREECAD_STARTUP_FILE}
 ENV PYTHONSTARTUP=${FREECAD_STARTUP_FILE}
-
-# Clean
-RUN apt-get clean \
-    && rm /var/lib/apt/lists/* \
-    /usr/share/doc/* \
-    /usr/share/locale/* \
-    /usr/share/man/* \
-    /usr/share/info/* -fR
