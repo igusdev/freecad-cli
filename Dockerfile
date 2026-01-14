@@ -1,11 +1,11 @@
 FROM ubuntu:24.04
-ARG freecad_version=1.0.2
+ARG freecad_version=1.1rc2
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHON_VERSION 3.12.7
-ENV PYTHON_MINOR_VERSION 3.12
-ENV PYTHON_BIN_VERSION python3.12
-ENV FREECAD_REPO https://github.com/FreeCAD/FreeCAD.git
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHON_VERSION=3.12.7
+ENV PYTHON_MINOR_VERSION=3.12
+ENV PYTHON_BIN_VERSION=python3.12
+ENV FREECAD_REPO=https://github.com/FreeCAD/FreeCAD.git
 
 RUN \
     pack_build=" \
@@ -39,7 +39,7 @@ RUN \
 
 RUN pipx ensurepath
 
-ENV PYTHONPATH "/usr/local/lib:$PYTHONPATH"
+ENV PYTHONPATH="/usr/local/lib"
 
 # get FreeCAD Git
 RUN cd && git clone --depth 1 --recurse-submodules --shallow-submodules --branch "$freecad_version" "$FREECAD_REPO"
@@ -52,8 +52,8 @@ RUN \
     && cmake \
     # Build with GUI for now otherwise qt components are not found
     # in some modules like TechDraw
-    # -DBUILD_GUI=OFF \
-    # -DBUILD_QT5=OFF \
+    #-DBUILD_GUI=OFF \
+    #-DBUILD_QT5=OFF \
     -DPYTHON_EXECUTABLE=/usr/bin/$PYTHON_BIN_VERSION \
     -DPYTHON_INCLUDE_DIR=/usr/include/$PYTHON_BIN_VERSION \
     -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/lib${PYTHON_BIN_VERSION}.so \
@@ -78,9 +78,9 @@ RUN echo "/usr/lib/x86_64-linux-gnu/netgen" >> /etc/ld.so.conf.d/x86_64-linux-gn
 RUN ldconfig
 
 # Make Python already know all FreeCAD modules / workbenches.
-ENV FREECAD_STARTUP_FILE /.startup.py
+ENV FREECAD_STARTUP_FILE=/.startup.py
 RUN echo "import FreeCAD" > ${FREECAD_STARTUP_FILE}
-ENV PYTHONSTARTUP ${FREECAD_STARTUP_FILE}
+ENV PYTHONSTARTUP=${FREECAD_STARTUP_FILE}
 
 # Clean
 RUN apt-get clean \
