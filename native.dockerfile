@@ -31,7 +31,7 @@ RUN \
     python3-pyside2.qtcore python3-pyside2.qtgui python3-pyside2.qtwidgets \
     python3-pyside2.qtnetwork python3-pip python3-netgen \
     qtchooser qttools5-dev shiboken2 qtwayland5 \
-    qtbase5-dev swig wget \
+    qtbase5-dev swig wget xvfb \
     " \
     && apt update \
     && apt install -y --no-install-recommends software-properties-common \
@@ -54,10 +54,6 @@ RUN \
     && cd freecad-build \
     # Build \
     && cmake -G Ninja \
-    # Build with GUI for now otherwise qt components are not found
-    # in some modules like TechDraw
-    #-DBUILD_GUI=OFF \
-    #-DBUILD_QT5=OFF \
     -DPYTHON_EXECUTABLE=/usr/bin/$PYTHON_BIN_VERSION \
     -DPYTHON_INCLUDE_DIR=/usr/include/$PYTHON_BIN_VERSION \
     -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/lib${PYTHON_BIN_VERSION}.so \
@@ -85,3 +81,6 @@ RUN ldconfig
 ENV FREECAD_STARTUP_FILE=/.startup.py
 RUN echo "import FreeCAD" > ${FREECAD_STARTUP_FILE}
 ENV PYTHONSTARTUP=${FREECAD_STARTUP_FILE}
+
+# Make sure xvfb-run does not redirect stderr to stdout
+RUN sed -i 's|-DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@" 2>&1|-DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@"|g' /usr/bin/xvfb-run

@@ -9,6 +9,14 @@ In most cases it's all about keeping the image up to date. Images are published 
 
 ## Usage
 
+Native flavor:
+
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:1.0.1 FreeCADCmd <command>
+docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:1.1rc2 FreeCADCmd <command>
+```
+
+AppImage flavor:
+
+```bash
+docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:appimage-1.1rc2 freecad --console <command>
 ```
