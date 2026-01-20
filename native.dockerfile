@@ -84,3 +84,7 @@ ENV PYTHONSTARTUP=${FREECAD_STARTUP_FILE}
 
 # Make sure xvfb-run does not redirect stderr to stdout
 RUN sed -i 's|DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@" 2>&1|DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@"|g' /usr/bin/xvfb-run
+
+# Ensure XDG_RUNTIME_DIR is set and has the correct permissions
+ENV XDG_RUNTIME_DIR=/tmp/runtime-freecad
+RUN mkdir -p ${XDG_RUNTIME_DIR} && chmod 700 ${XDG_RUNTIME_DIR}
