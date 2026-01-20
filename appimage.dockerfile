@@ -22,4 +22,4 @@ RUN case "$TARGETPLATFORM" in \
     ln -s /squashfs-root/AppRun /usr/local/bin/freecad
 
 # Make sure xvfb-run does not redirect stderr to stdout
-RUN sed -i 's|-DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@" 2>&1|-DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@"|g' /usr/bin/xvfb-run
+RUN sed -i 's|DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@" 2>&1|DISPLAY=:\$SERVERNUM XAUTHORITY=\$AUTHFILE "$@"|g' /usr/bin/xvfb-run
