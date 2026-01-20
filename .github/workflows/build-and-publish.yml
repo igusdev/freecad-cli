@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  REPOSITORY_NAME: ghcr.io/igusdev/freecad-cli
+  REGISTRY_IMAGE: ghcr.io/igusdev/freecad-cli
   FREECAD_VERSION: 1.1rc2
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
           build-args: |
             freecad_version=${{ env.FREECAD_VERSION }}
           tags: |
-            ${{ env.REPOSITORY_NAME }}:${{ env.FREECAD_VERSION }}
+            ${{ env.REGISTRY_IMAGE }}:${{ env.FREECAD_VERSION }}
 
   build-appimage:
     strategy:
@@ -57,7 +57,7 @@ jobs:
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
 
-          image_name=${{ env.REPOSITORY_NAME }}
+          image_name=${{ env.REGISTRY_IMAGE }}
           echo "IMAGE_NAME=${image_name//ghcr.io\/igusdev\///}" >> $GITHUB_ENV
 
       - name: Checkout repository
@@ -87,7 +87,7 @@ jobs:
           cache-from: type=gha,scope=${{ env.IMAGE_NAME}}-appimage-${{ github.ref_name }}-${{ matrix.platform }}
           cache-to: type=gha,scope=${{ env.IMAGE_NAME }}-appimage-${{ github.ref_name }}-${{ matrix.platform }},mode=max
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
-          tags: ${{  env.REPOSITORY_NAME }}
+          tags: ${{  env.REGISTRY_IMAGE }}
           build-args: |
             freecad_version=${{ env.FREECAD_VERSION }}
 
