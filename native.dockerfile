@@ -32,12 +32,12 @@ RUN \
         libspnav-dev libxmu-dev libxmuu-dev \
         libyaml-cpp-dev lsb-release netgen \
         netgen-headers occt-draw \
-        python$PYTHON_MINOR_VERSION-full \
+        python$PYTHON_MINOR_VERSION-full python$PYTHON_MINOR_VERSION-dev python3-setuptools \
         pyside6-tools python3-matplotlib python3-pivy \
         python3-defusedxml python3-lark python3-markdown \
         python3-ply python3-pybind11 python3-netgen \
-        python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtnetwork \
-        python3-pyside6.qtsvg python3-pyside6.qtwidgets \
+        python3-pip python3-pyside6.qtcore python3-pyside6.qtgui \
+        python3-pyside6.qtnetwork python3-pyside6.qtsvg python3-pyside6.qtwidgets \
         qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
         qt6-wayland swig xvfb \
     && apt-get clean \
