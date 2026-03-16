@@ -2,50 +2,50 @@ FROM ubuntu:24.04
 ARG freecad_version=1.1rc3
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PYTHON_VERSION=3.12.7
 ENV PYTHON_MINOR_VERSION=3.12
 ENV PYTHON_BIN_VERSION=python3.12
 ENV FREECAD_REPO=https://github.com/FreeCAD/FreeCAD.git
 
 RUN \
-    pack_build=" \
-    build-essential cmake git ninja-build \
-    gmsh libboost-date-time-dev libboost-dev \
-    libboost-filesystem-dev libboost-graph-dev libboost-iostreams-dev \
-    libboost-program-options-dev libboost-python-dev libboost-regex-dev \
-    libboost-serialization-dev libboost-thread-dev libcoin-dev \
-    libeigen3-dev libgts-bin libgts-dev libkdtree++-dev \
-    libmedc-dev libmetis-dev libocct-data-exchange-dev \
-    libocct-draw-dev libocct-foundation-dev libocct-modeling-algorithms-dev \
-    libocct-modeling-data-dev libocct-ocaf-dev libocct-visualization-dev \
-    libopencv-dev libproj-dev libqt6svg6-dev \
-    libtool libvtk9-dev libvtk-dicom-dev \
-    libx11-dev libxerces-c-dev libzipios++-dev \
-    libgtkglext1-dev libkml-dev libpyside6-dev \
-    libshiboken6-dev libvtk9-qt-dev libxmu-dev libxmuu-dev \
-    libyaml-cpp-dev lsb-release netgen \
-    netgen-headers occt-draw pipx \
-    python$PYTHON_MINOR_VERSION python$PYTHON_MINOR_VERSION-dev python3-setuptools \
-    python3-matplotlib python3-pivy \
-    python3-ply python3-pyside6 \
-    python3-pip python3-netgen \
-    qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
-    qt6-wayland swig wget xvfb \
-    " \
     apt update \
-    && apt install -y --no-install-recommends software-properties-common wget gnupg2 ca-certificates \
-    && wget -qO - https://archive.neon.kde.org/public.key | apt-key add - \
-    && echo "deb http://archive.neon.kde.org/user/noble noble main" > /etc/apt/sources.list.d/neon.list \
-    && apt update \
-    && apt install -y --no-install-recommends $pack_build \
+    && apt-get upgrade --yes \
+    && apt-get install -y --no-install-recommends \
+        software-properties-common wget gnupg2 ca-certificates \
+    && wget -qO- http://archive.neon.kde.org/public.key | gpg --dearmor -o /usr/share/keyrings/neon-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" > /etc/apt/sources.list.d/neon-qt.list \
+    && apt-get update -qq \
+    && apt install -y --no-install-recommends \
+        build-essential cmake git ninja-build \
+        gmsh libboost-date-time-dev libboost-dev \
+        libboost-filesystem-dev libboost-graph-dev libboost-iostreams-dev \
+        libboost-program-options-dev libboost-python-dev libboost-regex-dev \
+        libboost-serialization-dev libboost-thread-dev libcoin-dev \
+        libeigen3-dev libgts-bin libgts-dev libkdtree++-dev \
+        libmedc-dev libmetis-dev libocct-data-exchange-dev \
+        libocct-draw-dev libocct-foundation-dev libocct-modeling-algorithms-dev \
+        libocct-modeling-data-dev libocct-ocaf-dev libocct-visualization-dev \
+        libopencv-dev libproj-dev libqt6svg6-dev \
+        libtool libvtk9-dev libvtk-dicom-dev \
+        libx11-dev libxerces-c-dev libzipios++-dev \
+        libgtkglext1-dev libkml-dev libpyside6-dev \
+        libqt6opengl6-dev libshiboken6-dev libvtk9-qt-dev \
+        libspnav-dev libxmu-dev libxmuu-dev \
+        libyaml-cpp-dev lsb-release netgen \
+        netgen-headers occt-draw \
+        python$PYTHON_MINOR_VERSION-full \
+        pyside6-tools python3-matplotlib python3-pivy \
+        python3-defusedxml python3-lark python3-markdown \
+        python3-ply python3-pybind11 python3-netgen \
+        python3-pyside6.qtcore python3-pyside6.qtgui python3-pyside6.qtnetwork \
+        python3-pyside6.qtsvg python3-pyside6.qtwidgets \
+        qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
+        qt6-wayland swig xvfb \
     && apt-get clean \
     && rm /var/lib/apt/lists/* \
     /usr/share/doc/* \
     /usr/share/locale/* \
     /usr/share/man/* \
     /usr/share/info/* -fR
-
-RUN pipx ensurepath
 
 ENV PYTHONPATH="/usr/local/lib"
 
