@@ -18,23 +18,25 @@ RUN \
     libmedc-dev libmetis-dev libocct-data-exchange-dev \
     libocct-draw-dev libocct-foundation-dev libocct-modeling-algorithms-dev \
     libocct-modeling-data-dev libocct-ocaf-dev libocct-visualization-dev \
-    libopencv-dev libproj-dev libqt5svg5-dev\
+    libopencv-dev libproj-dev libqt6svg6-dev \
     libtool libvtk9-dev libvtk-dicom-dev \
     libx11-dev libxerces-c-dev libzipios++-dev \
-    libgtkglext1-dev libkml-dev libpyside2-dev \
-    libshiboken2-dev libvtk9-qt-dev libxmu-dev libxmuu-dev \
+    libgtkglext1-dev libkml-dev libpyside6-dev \
+    libshiboken6-dev libvtk9-qt-dev libxmu-dev libxmuu-dev \
     libyaml-cpp-dev lsb-release netgen \
     netgen-headers occt-draw pipx \
     python$PYTHON_MINOR_VERSION python$PYTHON_MINOR_VERSION-dev python3-setuptools \
-    pyside2-tools python3-matplotlib python3-pivy \
-    python3-ply python3-pyside2.qtsvg python3-pyside2.qtuitools \
-    python3-pyside2.qtcore python3-pyside2.qtgui python3-pyside2.qtwidgets \
-    python3-pyside2.qtnetwork python3-pip python3-netgen \
-    qtchooser qttools5-dev shiboken2 qtwayland5 \
-    qtbase5-dev swig wget xvfb \
+    python3-matplotlib python3-pivy \
+    python3-ply python3-pyside6 \
+    python3-pip python3-netgen \
+    qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
+    qt6-wayland swig wget xvfb \
     " \
+    apt update \
+    && apt install -y --no-install-recommends software-properties-common wget gnupg2 ca-certificates \
+    && wget -qO - https://archive.neon.kde.org/public.key | apt-key add - \
+    && echo "deb http://archive.neon.kde.org/user/noble noble main" > /etc/apt/sources.list.d/neon.list \
     && apt update \
-    && apt install -y --no-install-recommends software-properties-common \
     && apt install -y --no-install-recommends $pack_build \
     && apt-get clean \
     && rm /var/lib/apt/lists/* \
@@ -59,6 +61,7 @@ RUN \
     -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/lib${PYTHON_BIN_VERSION}.so \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_FEM_NETGEN=ON \
+    -DFREECAD_QT_VERSION:STRING=6 \
     -DENABLE_DEVELOPER_TESTS=OFF \
     ../FreeCAD \
     \
@@ -69,8 +72,8 @@ RUN \
     # Clean
     && rm FreeCAD/ freecad-build/ -fR
 
-# FreeCAD import PySide2 module as `import PySide`
-RUN ln -s /usr/lib/python3/dist-packages/PySide2 /usr/lib/python3/dist-packages/PySide
+# FreeCAD import PySide6 module as `import PySide`
+RUN ln -s /usr/lib/python3/dist-packages/PySide6 /usr/lib/python3/dist-packages/PySide
 
 # Fixed import MeshPart module due to missing libnglib.so
 # https://bugs.launchpad.net/ubuntu/+source/freecad/+bug/1866914
