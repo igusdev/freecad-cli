@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY_IMAGE: ghcr.io/igusdev/freecad-cli
-  FREECAD_VERSION: 1.1rc2
+  FREECAD_VERSION: 1.1rc3
 
 jobs:
   build-native:
