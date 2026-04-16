@@ -1,5 +1,5 @@
 FROM ubuntu:24.04
-ARG freecad_version=1.1.0
+ARG freecad_version=1.1.1
 ARG python_version=311
 ARG TARGETPLATFORM
 
