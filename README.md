@@ -5,18 +5,27 @@ In most cases it's all about keeping the image up to date. Images are published 
 
 ## Documentation
 
-<https://wiki.freecadweb.org/FreeCAD_Docker_CLI_mode>
+<https://wiki.freecad.org/FreeCAD_Docker_CLI_mode>
 
 ## Usage
 
 Native flavor:
 
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:1.1.3 FreeCADCmd <command>
+docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:1.1.4 FreeCADCmd <command>
 ```
 
 AppImage flavor:
 
 ```bash
-docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:appimage-1.1.3 freecad --console <command>
+docker run --rm -v $(pwd):/data ghcr.io/igusdev/freecad-cli:appimage-1.1.4 freecad --console <command>
+```
+
+## Smoke test
+
+`test/smoke.py` checks that the main modules import and that STEP/STL export works. CI runs it against every image before publishing:
+
+```bash
+docker run --rm -v $(pwd)/test:/test ghcr.io/igusdev/freecad-cli:1.1.4 FreeCADCmd /test/smoke.py
+docker run --rm -v $(pwd)/test:/test ghcr.io/igusdev/freecad-cli:appimage-1.1.4 freecad --console /test/smoke.py </dev/null
 ```
