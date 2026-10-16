@@ -1,24 +1,30 @@
 FROM ubuntu:24.04
-ARG freecad_version=1.1.3
+ARG freecad_version=1.1.4
+# Empty for releases whose AppImage names have no Python suffix (26.x and later).
 ARG python_version=311
 ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y \
-    curl xvfb \
+    apt-get install -y --no-install-recommends \
+    ca-certificates curl xvfb \
     python3 python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 RUN case "$TARGETPLATFORM" in \
     *"amd64"*) FC_ARCH="x86_64" ;; \
     *"arm64"*) FC_ARCH="aarch64" ;; \
+    *) echo "Unsupported platform: $TARGETPLATFORM" >&2; exit 1 ;; \
     esac; \
-    curl -L https://github.com/FreeCAD/FreeCAD/releases/download/${freecad_version}/FreeCAD_${freecad_version}-Linux-${FC_ARCH}-py${python_version}.AppImage > FreeCAD.AppImage && \
-    chmod +x ./FreeCAD.AppImage && \
-    ./FreeCAD.AppImage --appimage-extract && \
-    rm FreeCAD.AppImage && \
+    FC_FILE="FreeCAD_${freecad_version}-Linux-${FC_ARCH}${python_version:+-py${python_version}}.AppImage"; \
+    FC_URL="https://github.com/FreeCAD/FreeCAD/releases/download/${freecad_version}"; \
+    curl -fsSLO "${FC_URL}/${FC_FILE}" && \
+    curl -fsSLO "${FC_URL}/${FC_FILE}-SHA256.txt" && \
+    sha256sum --check --ignore-missing "${FC_FILE}-SHA256.txt" && \
+    chmod +x "./${FC_FILE}" && \
+    "./${FC_FILE}" --appimage-extract && \
+    rm "${FC_FILE}" "${FC_FILE}-SHA256.txt" && \
     ln -s /squashfs-root/AppRun /usr/local/bin/freecad
 
 # Make sure xvfb-run does not redirect stderr to stdout

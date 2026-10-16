@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["local>igusdev/.github:renovate-config"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "FreeCAD version in workflow, Dockerfiles and README",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/build-and-publish\\.yml$/",
+        "/^(native|appimage)\\.dockerfile$/",
+        "/^README\\.md$/"
+      ],
+      "matchStrings": [
+        "FREECAD_VERSION: (?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "ARG freecad_version=(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "freecad-cli:(?:appimage-)?(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "FreeCAD/FreeCAD",
+      "datasourceTemplate": "github-releases"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": ["FreeCAD/FreeCAD"],
+      "groupName": "FreeCAD",
+      "semanticCommitType": "build"
+    }
+  ]
+}
